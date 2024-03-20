@@ -12,6 +12,9 @@
         <input type="text" placeholder="enter city name" spellcheck="false" />
         <button><img src="images/search.png" alt="search icon" /></button>
       </div>
+      <div class="error">
+        <p>Invalid city name</p>
+      </div>
       <div class="weather hide">
         <img src="images/rain.png" class="weather-icon" alt="weather icon" />*
         <h1 class="temp">22°C</h1>
@@ -47,22 +50,30 @@
 
       async function checkWeather(city) {
         const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
-        var data = await response.json();
-        console.log(data);
 
-        document.querySelector(".city").innerHTML = data.name;
-        document.querySelector(".temp").innerHTML =
-          Math.round(data.main.temp) + "° C";
-        document.querySelector(".humidity").innerHTML =
-          data.main.humidity + "%";
-        document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
-        weatherIcon.src = `images/${data.weather[0].main}.png`;
-        //console.log("weather icon : " + data.weather[0].main);
+        if (response.status == 404) {
+          document.querySelector(".error").style.display = "block";
+          document.querySelector(".weather").style.display = "none";
+        } else {
+          var data = await response.json();
+          console.log(data);
+
+          document.querySelector(".city").innerHTML = data.name;
+          document.querySelector(".temp").innerHTML =
+            Math.round(data.main.temp) + "° C";
+          document.querySelector(".humidity").innerHTML =
+            data.main.humidity + "%";
+          document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+          weatherIcon.src = `images/${data.weather[0].main}.png`;
+          //console.log("weather icon : " + data.weather[0].main);
+          weather.style.display = "block";
+          //weather.classList.remove("hide");
+          document.querySelector(".error").style.display = "none";
+        }
       }
 
       searchBtn.addEventListener("click", function () {
         checkWeather(searchBox.value);
-        weather.classList.remove("hide");
       });
     </script>
   </body>
