@@ -38,11 +38,13 @@
     <script>
       const apiKey = "efb7ac7e12bf2675fe7eb9538d092677";
       const apiUrl =
-        "https://api.openweathermap.org/data/2.5/weather?units=metric&q=kinshasa";
+        "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
       //  "https://api.openweathermap.org/data/2.5/weather?q=kinshasa&appid=efb7ac7e12bf2675fe7eb9538d092677&units=metric";
+      const searchBox = document.querySelector(".search input");
+      const searchBtn = document.querySelector(".search button");
 
-      async function checkWeather() {
-        const response = await fetch(apiUrl + `&appid=${apiKey}`);
+      async function checkWeather(city) {
+        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
         var data = await response.json();
         console.log(data);
 
@@ -53,7 +55,10 @@
           data.main.humidity + "%";
         document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
       }
-      checkWeather();
+
+      searchBtn.addEventListener("click", function () {
+        checkWeather(searchBox.value);
+      });
     </script>
   </body>
 </html>
