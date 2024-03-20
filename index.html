@@ -12,7 +12,7 @@
         <input type="text" placeholder="enter city name" spellcheck="false" />
         <button><img src="images/search.png" alt="search icon" /></button>
       </div>
-      <div class="weather">
+      <div class="weather hide">
         <img src="images/rain.png" class="weather-icon" alt="weather icon" />*
         <h1 class="temp">22°C</h1>
         <h2 class="city">Kinshasa</h2>
@@ -42,6 +42,8 @@
       //  "https://api.openweathermap.org/data/2.5/weather?q=kinshasa&appid=efb7ac7e12bf2675fe7eb9538d092677&units=metric";
       const searchBox = document.querySelector(".search input");
       const searchBtn = document.querySelector(".search button");
+      const weatherIcon = document.querySelector(".weather-icon");
+      const weather = document.querySelector(".weather");
 
       async function checkWeather(city) {
         const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
@@ -54,10 +56,13 @@
         document.querySelector(".humidity").innerHTML =
           data.main.humidity + "%";
         document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+        weatherIcon.src = `images/${data.weather[0].main}.png`;
+        //console.log("weather icon : " + data.weather[0].main);
       }
 
       searchBtn.addEventListener("click", function () {
         checkWeather(searchBox.value);
+        weather.classList.remove("hide");
       });
     </script>
   </body>
